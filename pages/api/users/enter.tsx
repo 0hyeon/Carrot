@@ -1,16 +1,10 @@
-<<<<<<< HEAD
 import mail from '@sendgrid/mail'
-=======
->>>>>>> origin
 import twilio from "twilio";
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/server/client";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 
-<<<<<<< HEAD
 mail.setApiKey(process.env.SENDGRID_KEY!);
-=======
->>>>>>> origin
 const twilioClient = twilio(process.env.TWILIO_SID,process.env.TWILIO_TOKEN);
 
 async function handler(
@@ -46,7 +40,6 @@ async function handler(
   console.log(token);
   
   if(phone){
-<<<<<<< HEAD
     // const message = await twilioClient.messages.create({
     //   messagingServiceSid: process.env.TWILIO_MSID,
     //   to:process.env.MY_PHONE!,
@@ -64,16 +57,6 @@ async function handler(
     //   html: `캐럿마켓 인증번호 ${payload}를 화면에 입력해주세요.`,
     // })
     // console.log(email);
-=======
-    const message = await twilioClient.messages.create({
-      messagingServiceSid: process.env.TWILIO_MSID,
-      to:process.env.MY_PHONE!,
-      body:`Your login token is ${payload}`
-    })
-    
-    console.log(message);
-    
->>>>>>> origin
   }
   return res.json({
     ok:true,
