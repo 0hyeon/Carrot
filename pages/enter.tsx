@@ -1,10 +1,11 @@
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@components/button";
 import Input from "@components/input";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
+import { useRouter } from "next/router";
 
 interface EnterForm {
   email?: string;
@@ -22,11 +23,14 @@ interface MutationResult {
 const Enter: NextPage = () => {
   const [enter, { loading, data, error }] =
     useMutation<MutationResult>("/api/users/enter");
+
   const [confirmToken, { loading: tokenLoading, data: tokenData }] =
     useMutation<MutationResult>("/api/users/confirm");
+
   const { register, handleSubmit, reset } = useForm<EnterForm>();
   const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
     useForm<TokenForm>();
+
   const [method, setMethod] = useState<"email" | "phone">("email");
   const onEmailClick = () => {
     reset();
@@ -44,6 +48,13 @@ const Enter: NextPage = () => {
     if (tokenLoading) return;
     confirmToken(validForm);
   };
+
+  const router = useRouter();
+  useEffect(() => {
+    if (tokenData?.ok) {
+      router.push("/");
+    }
+  }, [tokenData, router]);
   console.log("loading :", loading);
   return (
     <div className="mt-16 px-4">

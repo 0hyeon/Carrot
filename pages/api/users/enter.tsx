@@ -1,29 +1,30 @@
-import mail from '@sendgrid/mail'
+import mail from "@sendgrid/mail";
 import twilio from "twilio";
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/server/client";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 
 mail.setApiKey(process.env.SENDGRID_KEY!);
-const twilioClient = twilio(process.env.TWILIO_SID,process.env.TWILIO_TOKEN);
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 async function handler(
-  req: NextApiRequest, 
+  req: NextApiRequest,
   res: NextApiResponse<ResponseType>
-){
+) {
   const { phone, email } = req.body;
 
-  const user = phone ? { phone: +phone } : email ?{ email } : null;
-  if(!user) return res.status(400).json({ok:false}); 
+  const user = phone ? { phone } : email ? { email } : null;
+  if (!user) return res.status(400).json({ ok: false });
 
   const payload = Math.floor(100000 + Math.random() * 900000) + "";
   const token = await client.token.create({
     data: {
       payload,
       user: {
-        connectOrCreate: {//유저를 찾고, 찾지못한다면 생성. 
-          
-          //connect는 새로운 토큰을 이미존재하는 유저와 연결, 
+        connectOrCreate: {
+          //유저를 찾고, 찾지못한다면 생성.
+
+          //connect는 새로운 토큰을 이미존재하는 유저와 연결,
           //create는 새로운 token을 만들면서 새로운 user도 만들지
 
           where: {
@@ -38,17 +39,15 @@ async function handler(
     },
   });
   console.log(token);
-  
-  if(phone){
+
+  if (phone) {
     // const message = await twilioClient.messages.create({
     //   messagingServiceSid: process.env.TWILIO_MSID,
     //   to:process.env.MY_PHONE!,
     //   body:`Your login token is ${payload}`
     // })
-    
     // console.log(message);
-    
-  }else if(email){
+  } else if (email) {
     // const email = await mail.send({
     //   from: process.env.MAIL_ID!,
     //   to: "djdjdjk2006@naver.com",
@@ -59,7 +58,7 @@ async function handler(
     // console.log(email);
   }
   return res.json({
-    ok:true,
+    ok: true,
   });
 }
 
