@@ -1,1 +1,2 @@
-# Carrot
+#Carrot Market
+Nextjs,TypeScript,prisma,planetscale,Twillo
