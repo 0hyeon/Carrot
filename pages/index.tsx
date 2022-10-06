@@ -6,8 +6,8 @@ import useUser from "@libs/client/useUser";
 import Head from "next/head";
 
 const Home: NextPage = () => {
-  const user = useUser();
-  console.log("user :", user);
+  const { user, isLoading } = useUser();
+  console.log(user);
 
   return (
     <Layout title="홈" hasTabBar>
@@ -25,7 +25,7 @@ const Home: NextPage = () => {
             hearts={1}
           />
         ))}
-        <FloatingButton href="/items/upload">
+        <FloatingButton href="/products/upload">
           <svg
             className="h-6 w-6"
             xmlns="http://www.w3.org/2000/svg"

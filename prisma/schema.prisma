@@ -45,18 +45,18 @@
 // 모델 Token의 user가 자동완성 되지 않고 referentialIntegrity를 주석처리해도 자동 완성이 되지 않을 때에는 우선 저장을 해둔 뒤에 콘솔창에 npx prisma format을 입력하시면 됩니다.
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"] //추가
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
-  referentialIntegrity = "prisma" //추가2 
+  referentialIntegrity = "prisma"
 }
 
 model User {
   id        Int      @id @default(autoincrement())
-  phone     String?     @unique
+  phone     String?  @unique
   email     String?  @unique
   name      String
   avatar    String?

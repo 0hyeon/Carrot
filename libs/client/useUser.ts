@@ -1,22 +1,14 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import useSWR from "swr";
 
-const fetcher = (url: string) => fetch(url).then((response) => response.json());
-
 export default function useUser() {
-  const { data, error } = useSWR("/api/users/me/", fetcher); //swr로 밑에 모든코드를 대체
+  const { data, error } = useSWR("/api/users/me");
   const router = useRouter();
-  // const [user, Setuser] = useState();
-  // useEffect(() => {
-  //   fetch("/api/users/me/")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       if (!data.ok) {
-  //         return router.replace("/enter");
-  //       }
-  //       Setuser(data.profile);
-  //     });
-  // }, [router]);
-  return data;
+  useEffect(() => {
+    if (data && !data.ok) {
+      router.replace("/enter");
+    }
+  }, [data, router]);
+  return { user: data?.profile, isLoading: !data && !error };
 }
