@@ -1,2 +1,2 @@
 #Carrot Market
-Nextjs, TypeScript, prisma, planetscale, Twillo, IronSession
+Nextjs, TypeScript, prisma, planetscale, Twillo, IronSession , SWR
