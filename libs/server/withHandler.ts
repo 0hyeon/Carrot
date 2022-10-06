@@ -3,10 +3,18 @@ export interface ResponseType {
   ok: boolean;
   [key: string]: any;
 }
-export default function withHandler(
-  method: "GET" | "POST" | "DELETE",
-  fn: (req: NextApiRequest, res: NextApiResponse) => void
-) {
+
+interface ConfigType {
+  method: "GET" | "POST" | "DELETE";
+  handler: (req: NextApiRequest, res: NextApiResponse) => void;
+  isPrivate?: boolean;
+}
+
+export default function withHandler({
+  method,
+  isPrivate = true,
+  handler,
+}: ConfigType) {
   return async function (
     req: NextApiRequest,
     res: NextApiResponse
@@ -14,8 +22,11 @@ export default function withHandler(
     if (req.method !== method) {
       return res.status(405).end();
     }
+    if (isPrivate && !req.session.user) {
+      return res.status(401).json({ ok: false, error: "Plz log in." });
+    }
     try {
-      await fn(req, res);
+      await handler(req, res);
     } catch (error) {
       console.log(error);
       return res.status(500).json({ error });
@@ -26,4 +37,4 @@ export default function withHandler(
 
 //fn: (req: NextApiRequest, res: NextApiResponse) => void 요것이 arguments *인자
 
-//Next가 실행해야할것을 return 해야함 
+//Next가 실행해야할것을 return 해야함
