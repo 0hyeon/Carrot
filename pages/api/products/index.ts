@@ -10,7 +10,16 @@ async function handler(
   //   const { name, price, description } = req.body;
   //   const { user } = req.session;
   if (req.method === "GET") {
-    const products = await client.product.findMany({});
+    const products = await client.product.findMany({
+      include: {
+        _count: {
+          select: {
+            //해당필드만 가져옴.
+            favs: true, //이렇게하면, product자신이 가지고있는 favs의 갯수가 출력됨
+          },
+        },
+      },
+    });
     return res.json({
       ok: true,
       products,

@@ -62,9 +62,12 @@ model User {
   avatar    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  tokens    Token[]
-  products  Product[]
-  favs      Fav[]
+  tokens    Token[]//지목당함
+  products  Product[]//지목당함
+  favs      Fav[]//지목당함
+  post      Post[]//지목당함
+  answer    Answer[]//지목당함 유저가 여러개의 답변있을수도있어서 post user 둘다 지목당함 
+  wonderings   Wondering[]
 }
 
 model Token {
@@ -87,7 +90,7 @@ model Product {
   description String   @db.MediumText
   favs        Fav[]
 }
-
+//찜
 model Fav {
   id          Int      @id @default(autoincrement())
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -96,4 +99,37 @@ model Fav {
   productId   Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+//동네생활
+model Post {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)//가리킴
+  userId      Int
+  question    String   @db.MediumText
+  answer      Answer[]
+  wondering   Wondering[]
+}
+//답변
+model Answer {//answer를 만든건 user이지만  가지고있는건 post 그fotj 포스트에 속해있다는것도 알려줘야해
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)//가리킴
+  userId      Int
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)//가리킴
+  postId      Int
+  answer      String   @db.MediumText
+}
+
+model Wondering{
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
 }

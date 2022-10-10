@@ -18,6 +18,7 @@ async function handler(
     include: {
       user: {
         select: {
+          //해당 필드만 가져옴
           id: true,
           name: true,
           avatar: true,
