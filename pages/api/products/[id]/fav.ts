@@ -7,7 +7,6 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  // const { id } = req.query;
   const {
     query: { id },
     session: { user },
@@ -19,14 +18,12 @@ async function handler(
     },
   });
   if (alreadyExists) {
-    //delete
     await client.fav.delete({
       where: {
         id: alreadyExists.id,
       },
     });
   } else {
-    //create
     await client.fav.create({
       data: {
         user: {
@@ -47,7 +44,7 @@ async function handler(
 
 export default withApiSession(
   withHandler({
-    methods: ["GET"],
+    methods: ["POST"],
     handler,
   })
 );
