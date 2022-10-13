@@ -12,11 +12,9 @@ async function handler(
   } = req;
   const post = await client.post.findUnique({
     where: {
-      //   id: Number(id),
       id: Number(id),
     },
     include: {
-      //   user: true,//유저 전체를 가져옴
       user: {
         select: {
           id: true,
@@ -24,15 +22,27 @@ async function handler(
           avatar: true,
         },
       },
-      _count: {
+      answers: {
         select: {
           answer: true,
+          id: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+            },
+          },
+        },
+      },
+      _count: {
+        select: {
+          answers: true,
           wondering: true,
         },
       },
     },
   });
-  if (!post) res.status(404).json({ ok: false, error: "Not found post" });
   res.json({
     ok: true,
     post,

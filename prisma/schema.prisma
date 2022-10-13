@@ -1,48 +1,6 @@
-//Prisma = ORM (object relational mapping) 번역기 역할 js(TS)와 db의 사다리 역할 
-//사용하기 위해 프리즈마에게 schema.prisma에 db가 어떻게 생겨 먹었는지 모양을 알려줘야 한다.
-//clinet는 훌륭한 자동완성을 도와줘서 좋다.
-//prisma-studio도 있어서좋다. (비주얼 데이터베이서 브라우저) (설치를 안해도 되서 너무좋다.)
-//mysql을 사용하는 이유는 PlanetScale과 호환이 되어서 사용 
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-//stop 1
-//npx prisma init ->  prisma .env 파일 생성됨 
-//step 2 
-//.env 파일에  DATABASE_URL 세팅을 해줘야함
-//step 3 
-//schema.prisma에서 datasource db 객체 안에 provider를 "mysql"로 바꿔줘야함 
-
-//planet scale이란 ? mysql과 호환되는 serverless db플랫폼,  Vitess는 유튜브를 scale하기 위해 구글이 만든것으로 대규모 기업들이 mysql을 스케일링 하기 위해 쓰는방법  , 가장 스케일링이 뛰어난 오프소스 db      
-
-// Planet Scale cli 설치 (맥)
-// 터미널에서 아래를 차례대로 실행
-// 1. brew install planetscale/tap/pscale
-// (pscale은 Homebrew Tap을 통해 사용할 수 있습니다.)
-// 2. brew install mysql-client (mysql client설치)
-// 3. brew upgrade pscale (최신 버전 업데이트)
-
-// 4.터미널에 pscale 쳐서 오류가없으면 잘설치됨
-
-// 5.pscale auth login 로그인
-// 6.pscale region list 리전확인 ( ap-northeast 기억 )
-// 7.pscale database create carrott-marget --region ap-northeast db생성
-// 8.pscale connect carrot-market  db연결 -> mysql다운 설치 실행 필요 x  , .env파일 필요 x 브라우저에서 제공   , 하나는 플래넷스케일용 하나는 컴퓨터용으로 쓸필요x 
-
-// mysql compatible vitess는 오류를 안보내기 때문에 prisma를 통해 오류를 확인해야한다. 
-// 9.clinet -> previewFeatures=["referentialIntegrity"] , datasource -> referentialIntegrity = "prisma" 추가 
-
-// prisma schema를  planetscale에 push
-//10. npx prisma db push 
-
-// client가 먼진 모르겠지만 이를 사용하기위해 => 생각하는 방식으로 구성하고 앱에 맞춤화된 유형으로 Prisma 스키마에서 자동 생성되는 쿼리 빌더입니다.
-// Prisma Client가 mongo DB의 mongoose와 같은 역할인가요?
-// Yea! 
-
-// npx prisma studio
-
-//12.libs파일생성 client.ts 생성
-//13.npm install @prisma/client
-
-// 모델 Token의 user가 자동완성 되지 않고 referentialIntegrity를 주석처리해도 자동 완성이 되지 않을 때에는 우선 저장을 해둔 뒤에 콘솔창에 npx prisma format을 입력하시면 됩니다.
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
@@ -55,19 +13,19 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  phone     String?  @unique
-  email     String?  @unique
-  name      String
-  avatar    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tokens    Token[]//지목당함
-  products  Product[]//지목당함
-  favs      Fav[]//지목당함
-  post      Post[]//지목당함
-  answer    Answer[]//지목당함 유저가 여러개의 답변있을수도있어서 post user 둘다 지목당함 
-  wonderings   Wondering[]
+  id         Int         @id @default(autoincrement())
+  phone      String?     @unique
+  email      String?     @unique
+  name       String
+  avatar     String?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  tokens     Token[]
+  products   Product[]
+  fav        Fav[]
+  posts      Post[]
+  answers    Answer[]
+  wonderings Wondering[]
 }
 
 model Token {
@@ -78,6 +36,7 @@ model Token {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 model Product {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
@@ -90,41 +49,40 @@ model Product {
   description String   @db.MediumText
   favs        Fav[]
 }
-//찜
+
 model Fav {
-  id          Int      @id @default(autoincrement())
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int
-  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId   Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-//동네생활
 model Post {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)//가리킴
-  userId      Int
-  question    String   @db.MediumText
-  answer      Answer[]
-  wondering   Wondering[]
-}
-//답변
-model Answer {//answer를 만든건 user이지만  가지고있는건 post 그fotj 포스트에 속해있다는것도 알려줘야해
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)//가리킴
-  userId      Int
-  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)//가리킴
-  postId      Int
-  answer      String   @db.MediumText
+  id        Int         @id @default(autoincrement())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  question  String      @db.MediumText
+  answers   Answer[]
+  wondering Wondering[]
 }
 
-model Wondering{
+model Answer {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  answer    String   @db.MediumText
+}
+
+model Wondering {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
