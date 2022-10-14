@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import client from "@libs/server/client";
 import { withApiSession } from "@libs/server/withSession";
+import { userAgent } from "next/server";
 
 async function handler(
   req: NextApiRequest,
@@ -9,6 +10,7 @@ async function handler(
 ) {
   const {
     query: { id },
+    session: { user },
   } = req;
   const post = await client.post.findUnique({
     where: {
@@ -43,9 +45,21 @@ async function handler(
       },
     },
   });
+  const isWondering = Boolean(
+    await client.wondering.findFirst({
+      where: {
+        postId: Number(id),
+        userId: user?.id,
+      },
+      select: {
+        id: true,
+      },
+    })
+  );
   res.json({
     ok: true,
     post,
+    isWondering,
   });
 }
 
