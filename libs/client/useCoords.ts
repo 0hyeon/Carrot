@@ -6,8 +6,8 @@ interface useCoordState {
 }
 export default function useCoords() {
   const [coords, setCoords] = useState<useCoordState>({
-    latitude: null,
-    longitude: null,
+    latitude: null, //초기값1
+    longitude: null, //초기값2
   });
   const onSuccess = ({
     coords: { latitude, longitude },
