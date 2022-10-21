@@ -43,12 +43,19 @@ async function handler(
       },
     },
   });
-  const isLiked = await client.fav.findFirst({
-    where: {
-      productId: product?.id,
-      userId: user?.id,
-    },
-  });
+  // const isLiked = await client.fav.findFirst({
+  //   where: {
+  //     productId: product?.id,
+  //     userId: user?.id,
+  //   },
+  // });
+  const isLiked = Boolean(
+    await client.record.findFirst({
+      where: { productId: product?.id, userId: user?.id, kind: "Fav" },
+      select: { id: true },
+    })
+  );
+
   res.json({ ok: true, product, isLiked, relatedProducts });
 }
 

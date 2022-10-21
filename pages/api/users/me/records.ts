@@ -1,19 +1,3 @@
-//     include: {
-//       product: {
-//         include: {
-//           _count: {
-//             select: {
-//               records: {
-//                 where: {
-//                   kind: { equals: "Fav" },
-//                 },
-//               },
-//             },
-//           },
-//         },
-//       },
-//     },
-//   });
 import { NextApiRequest, NextApiResponse } from "next";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import client from "@libs/server/client";
@@ -28,33 +12,21 @@ async function handler(
     query: { kind },
   } = req;
 
-  const refactoring = await client.record.findMany({
+  const KindValue = (kind: string) => {
+    if (kind === "fav") return "Fav";
+    if (kind === "purchase") return "Purchase";
+    if (kind === "sale") return "Sale";
+  };
+
+  const refactoring = await client.product.findMany({
     where: {
-      userId: user?.id,
-      kind: kind as Kind,
+      records: { some: { userId: user?.id, kind: KindValue(kind as Kind) } },
     },
-    // include: {
-    //   product: true,
-    // },
     include: {
-      product: {
-        include: {
-          _count: {
-            select: {
-              //   records: {
-              //     where: { kind: "Fav" },
-              //   },
-              records: true,
-            },
-          },
-        },
-      },
+      records: { where: { kind: "Fav" } },
     },
   });
-  res.json({
-    ok: true,
-    refactoring,
-  });
+  res.json({ ok: true, [kind as string]: refactoring });
 }
 
 export default withApiSession(

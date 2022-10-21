@@ -10,13 +10,25 @@ async function handler(
   const {
     session: { user },
   } = req;
-  const purchases = await client.purchase.findMany({
-    where: {
-      userId: user?.id,
-    },
-    include: {
-      product: true,
-    },
+  // const purchases = await client.purchase.findMany({
+  //   where: {
+  //     userId: user?.id,
+  //   },
+  //   include: {
+  //     product: {
+  //       include: {
+  //         _count: {
+  //           select: {
+  //             favs: true,
+  //           },
+  //         },
+  //       },
+  //     },
+  //   },
+  // });
+  const purchases = await client.product.findMany({
+    where: { records: { some: { userId: user?.id, kind: "Purchase" } } },
+    include: { records: { where: { kind: "Purchase" } } },
   });
   res.json({
     ok: true,

@@ -21,31 +21,41 @@ async function handler(
   });
   if (!product) return res.status(404).end();
 
-  const alreadyExists = await client.fav.findFirst({
-    where: {
-      productId: Number(id),
-      userId: user?.id,
-    },
+  // const alreadyExists = await client.fav.findFirst({
+  //   where: {
+  //     productId: Number(id),
+  //     userId: user?.id,
+  //   },
+  // });
+  const alreadyExists = await client.record.findFirst({
+    where: { productId: Number(id), userId: user?.id, kind: "Fav" },
   });
   if (alreadyExists) {
-    await client.fav.delete({
+    await client.record.delete({
       where: {
         id: alreadyExists.id,
       },
     });
   } else {
-    await client.fav.create({
+    // await client.fav.create({
+    //   data: {
+    //     user: {
+    //       connect: {
+    //         id: user?.id,
+    //       },
+    //     },
+    //     product: {
+    //       connect: {
+    //         id: Number(id),
+    //       },
+    //     },
+    //   },
+    // });
+    await client.record.create({
       data: {
-        user: {
-          connect: {
-            id: user?.id,
-          },
-        },
-        product: {
-          connect: {
-            id: Number(id),
-          },
-        },
+        user: { connect: { id: user?.id } },
+        product: { connect: { id: Number(id) } },
+        kind: "Fav",
       },
     });
   }
