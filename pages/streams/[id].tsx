@@ -7,7 +7,8 @@ import { Stream } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import useUser from "@libs/client/useUser";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import streams from "pages/api/streams";
 
 interface StreamMessage {
   message: string;
@@ -23,39 +24,69 @@ interface StreamWithMessages extends Stream {
 }
 
 interface StreamResponse {
-  ok: true;
+  ok: boolean;
   stream: StreamWithMessages;
 }
 
 interface MessageForm {
   message: string;
 }
-const Stream: NextPage = () => {
+const Streams: NextPage = () => {
   const { user } = useUser();
   const router = useRouter();
+  const scrollRef = useRef<HTMLDivElement>(null);
   const { register, handleSubmit, reset } = useForm<MessageForm>();
   const { data, mutate } = useSWR<StreamResponse>( //GET
-    router.query.id ? `/api/streams/${router.query.id}` : null
+    router.query.id ? `/api/streams/${router.query.id}` : null,
+    {
+      refreshInterval: 1000, //useSWR의 옵션 1초마다 새로갱신 데이터불러옴
+    }
   );
   const onValid = (form: MessageForm) => {
     if (loading) return;
     reset();
-    sendMessages(form);
+    mutate(
+      //가짜데이터 -> 사용자경험 측면에서 좋다.
+      //data refetch
+      //mutate는 캐시에 가짜데이터를 넣어 ui를 즉각적으로 만들지만,
+      //그즉시 백엔드에게 이중확인을 받게됨
+      (prev) =>
+        prev &&
+        ({
+          //첫번째 인수는 캐시의 모든 이전 데이터,
+          ...prev,
+          stream: {
+            ...prev.stream,
+            messages: [
+              ...prev.stream.messages,
+              {
+                id: Date.now(),
+                message: form.message,
+                user: {
+                  ...user,
+                },
+              },
+            ],
+          },
+        } as any),
+      false // 두번째 인수는 백엔드에서 재확인을 할지말지
+    );
+    sendMessages(form); //실제 백엔드에 메시지 보내는 함수
   };
   const [sendMessages, { loading, data: sendMessageData }] = useMutation(
     //POST
     `/api/streams/${router.query.id}/messages`
   );
+
   useEffect(() => {
-    if (sendMessageData && sendMessageData.ok) {
-      mutate(); // 다시 data refetch
-    }
-  }, [sendMessageData, mutate]);
-  useEffect(() => {
-    if (data?.ok !== true) {
+    if (data?.ok === false) {
       router.push("/streams");
     }
   }, [data, router]);
+  // 채팅창의 스크롤을 맨 밑으로 유지하는 법
+  useEffect(() => {
+    scrollRef?.current?.scrollIntoView();
+  });
   return (
     <Layout canGoBack>
       <div className="py-10 px-4  space-y-4">
@@ -76,11 +107,14 @@ const Stream: NextPage = () => {
             <Message message="I want ￦20,000" reversed />
             <Message message="미쳤어" /> */}
             {data?.stream?.messages.map((message) => (
-              <Message
-                key={message.id}
-                message={message.message}
-                reversed={message.user.id === user?.id}
-              />
+              <>
+                <Message
+                  key={message.id}
+                  message={message.message}
+                  reversed={message.user.id === user?.id}
+                />
+                <div ref={scrollRef} />
+              </>
             ))}
           </div>
           <div className="fixed py-2 bg-white bottom-0 inset-x-0">
@@ -106,4 +140,4 @@ const Stream: NextPage = () => {
   );
 };
 
-export default Stream;
+export default Streams;
