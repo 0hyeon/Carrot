@@ -6,7 +6,6 @@ import useUser from "@libs/client/useUser";
 import Head from "next/head";
 import useSWR from "swr";
 import { Product, Record } from "@prisma/client";
-
 export interface ProductWithRecords extends Product {
   records: Record;
 }
