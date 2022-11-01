@@ -43,10 +43,9 @@ const EditProfile: NextPage = () => {
       setAvatarPreview(URL.createObjectURL(file));
     }
   }, [avatar]);
-  const [editProfile, { data, loading }] =
-    useMutation<EditProfileResponse>("/api/users/me");
+  const [editProfile, { data, loading }] = useMutation<EditProfileResponse>("/api/users/me");
 
-  const onvalid = ({ email, phone, name, avatar }: EditProfileForm) => {
+  const onvalid = async ({ email, phone, name, avatar }: EditProfileForm) => {
     if (loading) return;
     if (email === "" && phone === "" && name === "") {
       return setError("formErrors", {
@@ -54,7 +53,17 @@ const EditProfile: NextPage = () => {
           "이메일이나 전화번호 중 하나가 필요합니다. 하나를 선택하세요. ",
       });
     }
-    editProfile({ email, phone, name });
+    if( avatar && avatar.length > 0){
+      const cloudflareRequest = await ( await fetch('/api/files')).json();//CF에서 빈파일 url제공 
+      console.log(cloudflareRequest);
+      
+      return;
+      editProfile({ email, phone, name });//백엔드로¡
+      //ask for CF url 
+      // upload file to CF url
+    }else{
+      editProfile({ email, phone, name });//백엔드로
+    }
     /// ;
   };
   useEffect(() => {
