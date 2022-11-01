@@ -54,9 +54,13 @@ const EditProfile: NextPage = () => {
       });
     }
     if( avatar && avatar.length > 0){
-      const cloudflareRequest = await ( await fetch('/api/files')).json();//CF에서 빈파일 url제공 
-      console.log(cloudflareRequest);
-      
+      const {id, uploadURL} = await ( await fetch('/api/files')).json();// 백엔드api에서 CF에서 빈파일 url전해받음
+      const form = new FormData();
+      form.append("file",avatar[0])//인자1 : from의 name , 인자2 : 보낼사진 , 인자 3 : 사진의 이름 
+      await fetch(uploadURL, {
+        method:"POST",
+        body:form,
+      });
       return;
       editProfile({ email, phone, name });//백엔드로¡
       //ask for CF url 

@@ -24,7 +24,7 @@ async function handler(
   console.log(response);
   res.json({
     ok: true,
-    ...response.result,
+    ...response.result,// ...객체 자체가 아니라 객체의 내용을 제공합니다.
   });
 }
 //유저는 우리에게 url 을 원할거고, cloud flare는 url을 요청함
