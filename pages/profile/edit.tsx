@@ -34,7 +34,7 @@ const EditProfile: NextPage = () => {
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
     if (user?.name) setValue("name", user.name);
-    if (user?.avatar) setAvatarPreview(`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${user?.avatar}/public`);
+    if (user?.avatar) setAvatarPreview(`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${user?.avatar}/avatar`);
   }, [user, setValue]);
   const avatar = watch("avatar");
   const [avatarPreview, setAvatarPreview] = useState("");
