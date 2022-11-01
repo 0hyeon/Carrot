@@ -20,7 +20,7 @@ async function handler(
     //edit 이메일 수정
     const {
       session: { user },
-      body: { email, phone, name },
+      body: { email, phone, name, avatarId },
       //세션에 유저가 사용하는 메일과 같은 이메일이 넘어오면
       //req.body의 이메일과, req.session.user의 이메일이 같은지를 비교
     } = req;
@@ -97,6 +97,16 @@ async function handler(
         },
         data: {
           name,
+        },
+      });
+    }
+    if(avatarId){
+      await client.user.update({
+        where: {
+          id: user?.id,
+        },
+        data: {
+          avatar:avatarId,
         },
       });
     }
