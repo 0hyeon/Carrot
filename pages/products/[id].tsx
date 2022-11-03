@@ -46,8 +46,14 @@ const ItemDetail: NextPage = () => {
     <Layout canGoBack>
       <div className="px-4  py-4">
         <div className="mb-8">
-          
-          <img src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${data?.product?.image}/public`} className="h-96 bg-slate-300" />
+          <div className="relative pb-80">
+            <Image 
+              src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${data?.product?.image}/public`} 
+              className="h-96 bg-slate-300 object-cover" 
+              layout='fill'
+            />
+
+          </div>
           <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
             <Image width={48} height={48} src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${data?.product?.user?.avatar}/avatar`} className="w-12 h-12 rounded-full bg-slate-300" />
             <div>
@@ -66,7 +72,7 @@ const ItemDetail: NextPage = () => {
               {data?.product?.name}
             </h1>
             <span className="text-2xl block mt-3 text-gray-900">
-              ${data?.product?.price}
+              ₩{data?.product?.price}
             </span>
             <p className=" my-6 text-gray-700">{data?.product?.description}</p>
             <div className="flex items-center justify-between space-x-2">
