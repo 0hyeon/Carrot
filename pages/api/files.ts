@@ -16,7 +16,7 @@ async function handler(
         headers: {
           "Content-Type": "application/json",
           // "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${process.env.CF_TOKEN}`,
+          Authorization: `Bearer ${process.env.CF_IMAGE_TOKEN}`,
         },
       }
     )

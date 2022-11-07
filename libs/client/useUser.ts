@@ -14,10 +14,10 @@ export default function useUser() {
     if (data && !data.ok) {
       router.replace("/enter");
     }
-    console.log(router.pathname);
-    if (data && data.ok && router.pathname === "/enter") {
-      router.replace("/");
-    }
-  }, [data, router]);
+    console.log("router.pathname : ",router.pathname);
+    // if (data && data.ok && router.pathname === "/enter") {
+    //   router.replace("/");
+    // }
+  }, [data]);
   return { user: data?.profile, isLoading: !data && !error };
 }
