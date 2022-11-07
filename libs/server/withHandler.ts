@@ -11,7 +11,6 @@ interface ConfigType {
   handler: (req: NextApiRequest, res: NextApiResponse) => void;
   isPrivate?: boolean;
 }
-
 export default function withHandler({
   methods,
   isPrivate = true,

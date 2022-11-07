@@ -11,7 +11,9 @@
 //step 3 
 //schema.prisma에서 datasource db 객체 안에 provider를 "mysql"로 바꿔줘야함 
 
-//planet scale이란 ? mysql과 호환되는 serverless db플랫폼,  Vitess는 유튜브를 scale하기 위해 구글이 만든것으로 대규모 기업들이 mysql을 스케일링 하기 위해 쓰는방법  , 가장 스케일링이 뛰어난 오프소스 db      
+//planet scale이란 ? mysql과 호환되는 serverless db플랫폼,  
+//Vitess는 유튜브를 scale하기 위해 구글이 만든것으로 대규모 기업들이 mysql을 스케일링 하기 위해 쓰는방법  , 
+//가장 스케일링이 뛰어난 오프소스 db      
 
 // Planet Scale cli 설치 (맥)
 // 터미널에서 아래를 차례대로 실행
