@@ -43,7 +43,6 @@ const ItemDetail: NextPage = () => {
     alert("준비중입니다.");
   };
   useEffect(() => {});
-  console.log(data);
   return (
     <Layout canGoBack>
       <div className="px-4  py-4">

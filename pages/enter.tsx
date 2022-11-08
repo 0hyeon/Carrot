@@ -6,7 +6,8 @@ import Input from "@components/input";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import { useRouter } from "next/router";
-
+import useUser, { ProfileResponse } from "@libs/client/useUser";
+import useSWR from "swr";
 interface EnterForm {
   email?: string;
   phone?: string;
@@ -48,14 +49,20 @@ const Enter: NextPage = () => {
     if (tokenLoading) return;
     confirmToken(validForm);
   };
-
   const router = useRouter();
+  const { data: data3, error: error3 } =
+    useSWR<ProfileResponse>("/api/users/me");
   useEffect(() => {
-    if (tokenData?.ok == true) {
+    if (tokenData?.ok === true) {
       router.push("/");
     }
-  }, [tokenData, router,onTokenValid]);
-  console.log("tokenData :", tokenData);
+  }, [tokenData]);
+  useEffect(() => {
+    if (data3?.ok == true) {
+      router.push("/");
+    }
+  }, [data3]);
+
   return (
     <div className="mt-16 px-4">
       <h3 className="text-3xl font-bold text-center">Enter to Carrot</h3>

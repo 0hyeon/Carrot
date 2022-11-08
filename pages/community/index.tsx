@@ -5,6 +5,7 @@ import Layout from "@components/layout";
 import useSWR from "swr";
 import { Post, User } from "@prisma/client";
 import useCoords from "@libs/client/useCoords";
+import useUser from "@libs/client/useUser";
 
 interface PostWithUser extends Post {
   user: User;
@@ -21,6 +22,7 @@ interface PostsResponse {
 
 const Community: NextPage = () => {
   const { latitude, longitude } = useCoords();
+  const { user } = useUser();
   const { data } = useSWR<PostsResponse>(
     latitude && longitude
       ? `/api/posts?latitude=${latitude}&longitude=${longitude}`

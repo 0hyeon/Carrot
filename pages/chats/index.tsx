@@ -1,8 +1,10 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import Layout from "@components/layout";
+import useUser from "@libs/client/useUser";
 
 const Chats: NextPage = () => {
+  const { user } = useUser();
   return (
     <Layout hasTabBar title="채팅">
       <div className="divide-y-[1px] ">
