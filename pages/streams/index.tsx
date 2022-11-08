@@ -5,7 +5,7 @@ import Layout from "@components/layout";
 import { Stream } from "@prisma/client";
 import useSWR from "swr";
 import Image from "next/image";
-import useUser from "@libs/client/useUser";
+// import useUser from "@libs/client/useUser";
 
 interface StreamsResponse {
   ok: boolean;
@@ -14,7 +14,7 @@ interface StreamsResponse {
 }
 // console.log(records.result.filter((st: any) => st.status.state == "ready"));
 const Streams: NextPage = () => {
-  const { user } = useUser();
+  // const { user } = useUser();
   const { data } = useSWR<StreamsResponse>(`/api/streams`);
   return (
     <Layout hasTabBar title="라이브">

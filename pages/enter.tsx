@@ -50,18 +50,18 @@ const Enter: NextPage = () => {
     confirmToken(validForm);
   };
   const router = useRouter();
-  const { data: data3, error: error3 } =
-    useSWR<ProfileResponse>("/api/users/me");
+  // const { data: data3, error: error3 } =
+  //   useSWR<ProfileResponse>("/api/users/me");
   useEffect(() => {
     if (tokenData?.ok === true) {
       router.push("/");
     }
   }, [tokenData]);
-  useEffect(() => {
-    if (data3?.ok == true) {
-      router.push("/");
-    }
-  }, [data3]);
+  // useEffect(() => {
+  //   if (data3?.ok == true) {
+  //     router.push("/");
+  //   }
+  // }, [data3]);
 
   return (
     <div className="mt-16 px-4">
