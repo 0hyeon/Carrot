@@ -9,6 +9,7 @@ import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import Image from "next/image";
 interface AnswerWithUser extends Answer {
   user: User;
 }
@@ -82,7 +83,14 @@ const CommunityPostDetail: NextPage = () => {
           동네질문
         </span>
         <div className="flex mb-3 px-4 cursor-pointer pb-3  border-b items-center space-x-3">
-          <div className="w-10 h-10 rounded-full bg-slate-300" />
+          <div className="w-10 h-10 rounded-full bg-slate-300">
+            <Image
+              width={48}
+              height={48}
+              src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${data?.post?.user?.avatar}/avatar`}
+              className="w-12 h-12 rounded-full bg-slate-300"
+            />
+          </div>
           <div>
             <p className="text-sm font-medium text-gray-700">
               {data?.post?.user?.name}
@@ -161,7 +169,7 @@ const CommunityPostDetail: NextPage = () => {
         <form className="px-4" onSubmit={handleSubmit(onValid)}>
           <TextArea
             name="description"
-            placeholder="Answer this question!"
+            placeholder="답글을 입력해주세요!"
             required
             register={register("answer", { required: true, minLength: 5 })}
           />

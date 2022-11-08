@@ -9,13 +9,17 @@ import Image from "next/image";
 interface StreamsResponse {
   ok: boolean;
   streams: Stream[];
+  records: any;
 }
+// console.log(records.result.filter((st: any) => st.status.state == "ready"));
 const Streams: NextPage = () => {
   const { data } = useSWR<StreamsResponse>(`/api/streams`);
+  // console.log(data?.streams);
+  console.log(data?.records?.result);
   return (
     <Layout hasTabBar title="라이브">
       <div className=" divide-y-[1px] space-y-4">
-        {data?.streams?.map((stream) => (
+        {/* {data?.streams?.map((stream) => (
           <Link key={stream.id} href={`/streams/${stream.id}`}>
             <a className="pt-4 block  px-4">
               <div className="w-full relative overflow-hidden rounded-md shadow-sm bg-slate-300 aspect-video">
@@ -26,6 +30,25 @@ const Streams: NextPage = () => {
               </div>
               <h1 className="text-2xl mt-2 font-bold text-gray-900">
                 {stream.name}
+              </h1>
+            </a>
+          </Link>
+        ))} */}
+
+        {data?.records?.result?.map((stream: any) => (
+          <Link key={stream.id} href={`/streams/${stream.uid}`}>
+            <a className="pt-4 block  px-4">
+              <div className="w-full relative overflow-hidden rounded-md shadow-sm bg-slate-300 aspect-video">
+                {/* <Image layout="fill" src={stream.thumbnail} /> */}
+                <iframe
+                  className="w-full aspect-video  rounded-md shadow-sm"
+                  src={stream.preview}
+                  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                  allowFullScreen={true}
+                ></iframe>
+              </div>
+              <h1 className="text-2xl mt-2 font-bold text-gray-900">
+                {stream.meta.name}
               </h1>
             </a>
           </Link>
