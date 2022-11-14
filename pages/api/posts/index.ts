@@ -23,6 +23,7 @@ async function handler(
         },
       },
     });
+    await res.revalidate("/community"); //이제 이 페이지를 revalidate시킬수 있음
     res.json({
       ok: true,
       post,

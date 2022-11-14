@@ -4,8 +4,9 @@ import Item from "@components/item";
 import Layout from "@components/layout";
 import useUser, { ProfileResponse } from "@libs/client/useUser";
 import Head from "next/head";
-import useSWR from "swr";
+import useSWR, { SWRConfig } from "swr";
 import { Product, Record } from "@prisma/client";
+import client from "@libs/server/client";
 export interface ProductWithRecords extends Product {
   records: Record;
 }
@@ -19,10 +20,7 @@ const Home: NextPage = () => {
   const { data: data3, error: error3 } =
     useSWR<ProfileResponse>("/api/users/me");
   return (
-    <Layout title="홈" hasTabBar>
-      <Head>
-        <title>Home</title>
-      </Head>
+    <Layout title="홈" hasTabBar seoTitle="Home">
       <div className="flex flex-col space-y-5 divide-y">
         {data?.products?.map((product) => (
           <Item
@@ -57,4 +55,34 @@ const Home: NextPage = () => {
     </Layout>
   );
 };
-export default Home;
+
+const Page: NextPage<{ products: ProductWithRecords[] }> = ({ products }) => {
+  return (
+    <SWRConfig
+      value={{
+        fallback: {
+          //캐시초기값설정
+          "/api/products": {
+            ok: true,
+            products,
+          },
+        },
+      }}
+    >
+      <Home />
+    </SWRConfig>
+  );
+};
+export async function getServerSideProps() {
+  console.log("SSR");
+  const products = await client.product.findMany({
+    include: { records: { where: { kind: "Fav" } } },
+  });
+  return {
+    props: {
+      products: JSON.parse(JSON.stringify(products)),
+    },
+  };
+}
+
+export default Page;

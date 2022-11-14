@@ -1,10 +1,11 @@
-import type { NextPage } from "next";
+import type { NextPage, NextPageContext } from "next";
 import Link from "next/link";
 import Layout from "@components/layout";
 import useUser from "@libs/client/useUser";
-import useSWR from "swr";
+import useSWR, { SWRConfig } from "swr";
 import { Review, User } from "@prisma/client";
 import { cls } from "@libs/client/utils";
+import { withSsrSession } from "@libs/server/withSession";
 
 interface ReviewWithUser extends Review {
   createdBy: User;
@@ -145,4 +146,27 @@ const Profile: NextPage = () => {
     </Layout>
   );
 };
-export default Profile;
+
+const Page: NextPage = () => {
+  return (
+    <SWRConfig>
+      {/* fallback안에 들어갈 데이터 기본값 필요 */}
+      <Profile />
+    </SWRConfig>
+  );
+};
+
+export const getServerSideProps = withSsrSession(async function (
+  //withSsrSession를 감싼 익명함수
+  { req }: NextPageContext
+) {
+  // export async function getServerSideProps(ctx: NextPageContext) {
+  //ctx에서 쿠키값 가져온뒤 withApiSession함수에 넣어주어야함
+  // console.log(req?.session?.user);
+  return {
+    props: {
+      //useUser hook에서 req.session.user가 필요
+    },
+  };
+});
+export default Page;

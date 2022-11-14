@@ -26,3 +26,4 @@ const ChatDetail: NextPage = () => {
     </Layout>
   );
 };
+export default ChatDetail;

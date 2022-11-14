@@ -33,7 +33,7 @@ async function handler(
       }
     )
   ).json();
-  console.log(response);
+  // console.log(response);
   res.json({
     ok: true,
     ...response.result, // ...객체 자체가 아니라 객체의 내용을 제공합니다.

@@ -9,10 +9,11 @@ import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import Image from "next/image";
+
 interface AnswerWithUser extends Answer {
   user: User;
 }
+
 interface PostWithUser extends Post {
   user: User;
   _count: {
@@ -21,18 +22,22 @@ interface PostWithUser extends Post {
   };
   answers: AnswerWithUser[];
 }
+
 interface CommunityPostResponse {
   ok: boolean;
   post: PostWithUser;
   isWondering: boolean;
 }
+
 interface AnswerForm {
   answer: string;
 }
+
 interface AnswerResponse {
   ok: boolean;
   response: Answer;
 }
+
 const CommunityPostDetail: NextPage = () => {
   const router = useRouter();
   const { register, handleSubmit, reset } = useForm<AnswerForm>();
@@ -83,14 +88,14 @@ const CommunityPostDetail: NextPage = () => {
           동네질문
         </span>
         <div className="flex mb-3 px-4 cursor-pointer pb-3  border-b items-center space-x-3">
-          <div className="w-10 h-10 rounded-full bg-slate-300">
-            <Image
-              width={48}
-              height={48}
+          {data?.post?.user?.avatar ? (
+            <img
               src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${data?.post?.user?.avatar}/avatar`}
-              className="w-12 h-12 rounded-full bg-slate-300"
+              className="w-16 h-16 bg-slate-500 rounded-full"
             />
-          </div>
+          ) : (
+            <div className="w-16 h-16 bg-slate-500 rounded-full" />
+          )}
           <div>
             <p className="text-sm font-medium text-gray-700">
               {data?.post?.user?.name}
@@ -153,7 +158,14 @@ const CommunityPostDetail: NextPage = () => {
         <div className="px-4 my-5 space-y-5">
           {data?.post?.answers?.map((answer) => (
             <div key={answer.id} className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-slate-200 rounded-full" />
+              {answer?.user?.avatar ? (
+                <img
+                  src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${data?.post?.user?.avatar}/avatar`}
+                  className="w-16 h-16 bg-slate-500 rounded-full"
+                />
+              ) : (
+                <div className="w-16 h-16 bg-slate-500 rounded-full" />
+              )}
               <div>
                 <span className="text-sm block font-medium text-gray-700">
                   {answer.user.name}
@@ -169,7 +181,7 @@ const CommunityPostDetail: NextPage = () => {
         <form className="px-4" onSubmit={handleSubmit(onValid)}>
           <TextArea
             name="description"
-            placeholder="답글을 입력해주세요!"
+            placeholder="Answer this question!"
             required
             register={register("answer", { required: true, minLength: 5 })}
           />
@@ -181,4 +193,5 @@ const CommunityPostDetail: NextPage = () => {
     </Layout>
   );
 };
+
 export default CommunityPostDetail;

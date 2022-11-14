@@ -22,6 +22,7 @@ export default function ProductList({ kind }: ProductListProps) {
           key={record.id}
           title={record.name}
           price={record.price}
+          image={record.image}
           comments={3}
           hearts={Object.keys(record.records).length}
         />

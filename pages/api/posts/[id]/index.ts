@@ -35,6 +35,7 @@ async function handler(
               avatar: true,
             },
           },
+          createdAt: true,
         },
       },
       _count: {
