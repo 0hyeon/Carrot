@@ -49,7 +49,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
   };
   useEffect(() => {});
   return (
-    <Layout canGoBack>
+    <Layout canGoBack seoTitle="Product">
       <div className="px-4  py-4">
         <div className="mb-8">
           <div className="relative pb-80">
@@ -204,7 +204,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     },
   });
   const isLiked = false;
-  await new Promise((resolve) => setTimeout(resolve, 10000));
+  // await new Promise((resolve) => setTimeout(resolve, 10000));
   return {
     props: {
       product: JSON.parse(JSON.stringify(product)),
