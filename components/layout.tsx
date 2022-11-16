@@ -20,7 +20,6 @@ export default function Layout({
   const onClick = () => {
     router.back();
   };
-  console.log("seoTitle : ", seoTitle);
   return (
     <div>
       <Head>

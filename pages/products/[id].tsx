@@ -48,6 +48,14 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
     alert("준비중입니다.");
   };
   useEffect(() => {});
+
+  if (router.isFallback) {
+    return (
+      <Layout title="loading">
+        <span>Loading...</span>
+      </Layout>
+    );
+  }
   return (
     <Layout canGoBack seoTitle="Product">
       <div className="px-4  py-4">
@@ -164,7 +172,10 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
 export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [],
-    fallback: "blocking",
+    fallback: "blocking", // 3가지 옵션
+    //fallback : blocking => 미리만들어진 html이없으면, 최초의 유저는 아무것도 못보고 getStaticProps가 서버사이드렌더링에서 작동 되어 늦게 본후 html이 생성되고 나면 빠르게 랜더링ㄴ
+    //fallback : false => 준비된 html이 없으면 404eror , 즉 빌드될때 최초생성된 html만 view, 없으면 404 error
+    //fallback : true => 페이지 생성하면서 중간에 뭔가를 보여줌 blocking, ture는 최초로 html을 생성 그중 true는 준비해둔 html을 보여줌 if(router.isFallback) 해당
   };
 };
 
