@@ -2,7 +2,7 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Button from "@components/button";
 import Layout from "@components/layout";
 import { useRouter } from "next/router";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR, { SWRConfig, useSWRConfig } from "swr";
 import Link from "next/link";
 import { Product, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
@@ -25,7 +25,6 @@ interface ItemDetailResponse {
 const ItemDetail: NextPage<ItemDetailResponse> = ({
   product,
   relatedProducts,
-  isLiked,
 }) => {
   const { user, isLoading } = useUser();
   const router = useRouter();
@@ -44,14 +43,14 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
 
     toggleFav({});
   };
-  const alertReady = () => {
-    alert("준비중입니다.");
-  };
+  // const alertReady = () => {
+  //   alert("준비중입니다.");
+  // };
   useEffect(() => {});
 
   if (router.isFallback) {
     return (
-      <Layout title="loading">
+      <Layout title="loading" seoTitle="products">
         <span>Loading...</span>
       </Layout>
     );
@@ -90,24 +89,21 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
               {product?.name}
             </h1>
             <span className="text-2xl block mt-3 text-gray-900">
-              {data ? numberWithCommas(product?.price) + "원" : null}
+              {product ? numberWithCommas(product?.price) + "원" : null}
             </span>
             <p className=" my-6 text-gray-700">{product?.description}</p>
-            <div
-              className="flex items-center justify-between space-x-2"
-              onClick={alertReady}
-            >
+            <div className="flex items-center justify-between space-x-2">
               <Button large text="1:1 채팅하기" />
               <button
                 onClick={onFavClick}
                 className={cls(
                   "p-3 rounded-md flex items-center hover:bg-gray-100 justify-center ",
-                  isLiked
+                  data?.isLiked
                     ? "text-red-500  hover:text-red-600"
                     : "text-gray-400  hover:text-gray-500"
                 )}
               >
-                {isLiked ? (
+                {data?.isLiked ? (
                   <svg
                     className="w-6 h-6"
                     fill="currentColor"
@@ -169,6 +165,25 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
     </Layout>
   );
 };
+const Page: NextPage<{ products: ItemDetailResponse[] }> = ({ products }) => {
+  //캐시값사용
+  return (
+    <SWRConfig
+      value={{
+        fallback: {
+          //캐시초기값설정
+          "/api/products": {
+            ok: true,
+            products,
+          },
+        },
+      }}
+    >
+      {/* <ItemDetail product={} relatedProducts={} isLiked={} /> */}
+      {/* <ItemDetail /> */}
+    </SWRConfig>
+  );
+};
 export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [],
@@ -178,6 +193,8 @@ export const getStaticPaths: GetStaticPaths = () => {
     //fallback : true => 페이지 생성하면서 중간에 뭔가를 보여줌 blocking, ture는 최초로 html을 생성 그중 true는 준비해둔 html을 보여줌 if(router.isFallback) 해당
   };
 };
+// 내가 좋아요를 눌렀는지 확인하려면 로그인한 사용자의 정보가 제품에 있어야 한다는 것을 깨달았습니다.
+// 그래서 getStaticProps를 사용하여 isLiked를 제외한 모든 정보를 가져오고 useSWR을 사용하여 isLiked만 가져왔습니다.
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   if (!ctx?.params?.id) {
@@ -214,13 +231,11 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       },
     },
   });
-  const isLiked = false;
   // await new Promise((resolve) => setTimeout(resolve, 10000));
   return {
     props: {
       product: JSON.parse(JSON.stringify(product)),
       relatedProducts: JSON.parse(JSON.stringify(relatedProducts)),
-      isLiked,
     },
   };
 };

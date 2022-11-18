@@ -57,6 +57,7 @@ const Home: NextPage = () => {
 };
 
 const Page: NextPage<{ products: ProductWithRecords[] }> = ({ products }) => {
+  //캐시값사용
   return (
     <SWRConfig
       value={{
