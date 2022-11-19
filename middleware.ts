@@ -12,6 +12,7 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
     if (!req.url.includes("/enter") && !req.cookies.get("carrotsession")) {
       console.log("carrot session");
       NextResponse.redirect(`${req.nextUrl.origin}/enter`);
+      NextResponse.redirect(new URL("/enter", req.url));
     }
   }
 
