@@ -42,7 +42,11 @@ const CommunityPostDetail: NextPage = () => {
   const router = useRouter();
   const { register, handleSubmit, reset } = useForm<AnswerForm>();
   const { data, mutate } = useSWR<CommunityPostResponse>(
-    router.query.id ? `/api/posts/${router.query.id}` : null
+    typeof window === undefined
+      ? null
+      : router.query.id
+      ? `/api/posts/${router.query.id}`
+      : null
   );
   const [wonder, { loading }] = useMutation(
     `/api/posts/${router.query.id}/wonder`

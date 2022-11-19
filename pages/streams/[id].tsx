@@ -37,7 +37,11 @@ const Streams: NextPage = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const { register, handleSubmit, reset } = useForm<MessageForm>();
   const { data, mutate } = useSWR<StreamResponse>( //GET
-    router.query.id ? `/api/streams/${router.query.id}` : null,
+    typeof window === undefined
+      ? null
+      : router.query.id
+      ? `/api/streams/${router.query.id}`
+      : null,
     {
       refreshInterval: 1000, //useSWR의 옵션 1초마다 새로갱신 데이터불러옴
     }

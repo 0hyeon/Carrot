@@ -15,7 +15,9 @@ interface StreamsResponse {
 // console.log(records.result.filter((st: any) => st.status.state == "ready"));
 const Streams: NextPage = () => {
   // const { user } = useUser();
-  const { data } = useSWR<StreamsResponse>(`/api/streams`);
+  const { data } = useSWR<StreamsResponse>(
+    typeof window === undefined ? null : `/api/streams`
+  );
   return (
     <Layout hasTabBar title="라이브">
       <div className=" divide-y-[1px] space-y-4">

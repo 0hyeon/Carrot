@@ -16,7 +16,9 @@ interface ProductsResponse {
   products: ProductWithRecords[];
 }
 const Home: NextPage = () => {
-  const { data } = useSWR<ProductsResponse>("/api/products");
+  const { data } = useSWR<ProductsResponse>(
+    typeof window === undefined ? null : "/api/products"
+  );
   const { data: data3, error: error3 } =
     useSWR<ProfileResponse>("/api/users/me");
   return (
