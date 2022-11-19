@@ -87,6 +87,8 @@ model Token {
   userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model Product {
@@ -103,6 +105,8 @@ model Product {
   // sales       Sale[]
   // purchases   Purchase[]
   records     Record[]
+
+  @@index([userId])
 }
 
 model Post {
@@ -116,6 +120,8 @@ model Post {
   longitude Float? 
   answers   Answer[]
   wondering Wondering[]
+
+  @@index([userId])
 }
 
 model Answer {
@@ -127,6 +133,9 @@ model Answer {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
   answer    String   @db.MediumText
+
+  @@index([userId])
+  @@index([postId])
 }
 
 model Wondering {
@@ -137,19 +146,9 @@ model Wondering {
   userId    Int
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
+  @@index([userId])
+  @@index([postId])
 }
-
-// _count: {
-//   select: {
-//     records: {
-//         where: {
-//           kind: 'Fav'
-//         }
-//       }
-//     },
-//   }
-// }
-
 model Review {
   id           Int      @id @default(autoincrement())
   createdAt    DateTime @default(now())
@@ -160,6 +159,8 @@ model Review {
   createdFor   User     @relation(name: "receivedReviews", fields: [createdForId], references: [id], onDelete: Cascade)
   createdForId Int
   score        Int      @default(1)
+  @@index([createdById])
+  @@index([createdForId])
 }
 
 // model Sale {
@@ -202,6 +203,9 @@ model Record {
   kind      Kind
   // kind      String
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([productId])
 }
 
 // fav, purchase, sale의 구조가 동일하게 반복
@@ -230,6 +234,8 @@ model Stream {
   cloudflareId  String
   cloudflareUrl String
   cloudflareKey String
+
+  @@index([userId])
 }
 model Message {
   id        Int      @id @default(autoincrement())
@@ -240,4 +246,8 @@ model Message {
   stream    Stream     @relation(fields: [streamId], references: [id], onDelete: Cascade)
   streamId  Int
   message   String   @db.MediumText
+
+  @@index([userId])
+  @@index([streamId])
+  
 }
