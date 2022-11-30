@@ -4,10 +4,10 @@ import { SWRConfig } from "swr";
 import useUser from "@libs/client/useUser";
 import Script from "next/script";
 
-function LoginCheck() {
-  const { user } = useUser();
-  return null;
-}
+// function LoginCheck() {
+//   const { user } = useUser();
+//   return null;
+// }
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SWRConfig
@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       }}
     >
       <div className="w-full max-w-xl mx-auto">
-        <LoginCheck />
+        {/* <LoginCheck /> */}
         <Component {...pageProps} />
         {/* <Script
           src="https://developers.kakao.com/sdk/js/kakao.js"

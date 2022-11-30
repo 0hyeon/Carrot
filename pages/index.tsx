@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import FloatingButton from "@components/floating-button";
 import Item from "@components/item";
 import Layout from "@components/layout";
-import useUser, { ProfileResponse } from "@libs/client/useUser";
+// import useUser, { ProfileResponse } from "@libs/client/useUser";
 import Head from "next/head";
 import useSWR, { SWRConfig } from "swr";
 import { Product, Record } from "@prisma/client";
@@ -19,8 +19,8 @@ const Home: NextPage = () => {
   const { data } = useSWR<ProductsResponse>(
     typeof window === undefined ? null : "/api/products"
   );
-  const { data: data3, error: error3 } =
-    useSWR<ProfileResponse>("/api/users/me");
+  // const { data: data3, error: error3 } =
+  //   useSWR<ProfileResponse>("/api/users/me");
   return (
     <Layout title="홈" hasTabBar seoTitle="Home">
       <div className="flex flex-col space-y-5 divide-y">

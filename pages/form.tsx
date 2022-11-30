@@ -6,7 +6,6 @@ interface LoginForm {
   email: string;
   errors?: string;
 }
-
 export default function Forms() {
   const {
     register,
@@ -21,7 +20,6 @@ export default function Forms() {
     mode: "onChange",
   });
   const onValid = (data: LoginForm) => {
-    console.log("im valid bby");
     setError("username", { message: "이미존재하는 이름입니다." });
     // reset();
   };
