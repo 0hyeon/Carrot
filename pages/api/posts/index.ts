@@ -53,12 +53,12 @@ async function handler(
       },
       where: {
         latitude: {
-          gte: parsedLatitude - 0.01,
-          lte: parsedLatitude + 0.01,
+          gte: parsedLatitude - 0.1,
+          lte: parsedLatitude + 0.1,
         },
         longitude: {
-          gte: parsedLongitude - 0.01,
-          lte: parsedLongitude + 0.01,
+          gte: parsedLongitude - 0.1,
+          lte: parsedLongitude + 0.1,
         },
       },
     });
