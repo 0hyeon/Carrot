@@ -9,12 +9,14 @@ import { useEffect, useState } from "react";
 import { Product } from "@prisma/client";
 import { useRouter } from "next/router";
 import products from "pages/api/products";
+import Image from "next/image";
+import axios from "axios";
 
 interface UploadProductForm {
   name: string;
   price: number;
   description: string;
-  photo : FileList;
+  photo: FileList;
 }
 interface UploadProductMutation {
   ok: boolean;
@@ -26,20 +28,29 @@ const Upload: NextPage = () => {
   const { register, handleSubmit, watch } = useForm<UploadProductForm>();
   const [uploadProduct, { loading, data }] =
     useMutation<UploadProductMutation>("/api/products");
-  const onValid = async ({name,price,description}: UploadProductForm) => {
-    if (loading) return;
-    if (photo && photo.length > 0 ){
-      const { uploadURL } = await ( await fetch('/api/files')).json();// 백엔드api에서 CF에서 빈파일 url전해받음
-      const form = new FormData();
-      form.append("file",photo[0], name)//인자1 : from의 name , 인자2 : 보낼사진 , 인자 3 : 사진의 이름 
 
+  const onValid = async ({ name, price, description }: UploadProductForm) => {
+    if (loading) return;
+    if (photo && photo.length > 0) {
+      const { uploadURL } = await (await fetch("/api/files")).json(); // 백엔드api에서 CF에서 빈파일 url전해받음
+      const form = new FormData();
+      form.append("file", photo[0], name); //인자1 : from의 name , 인자2 : 보낼사진 , 인자 3 : 사진의 이름
       const {
-        result:{ id  },//파일의 id를 백엔드로 보내야함
-      } = await (await fetch(uploadURL, { method:"POST", body:form })).json()
-      uploadProduct({name,price,description,photoId:id});
-    }else{
-      uploadProduct({name,price,description});
+        result: { id }, //파일의 id를 백엔드로 보내야함
+      } = await (await fetch(uploadURL, { method: "POST", body: form })).json();
+      uploadProduct({ name, price, description, photoId: id });
+    } else {
+      uploadProduct({ name, price, description });
     }
+  };
+  const [photoPreview, setPhotoPreview] = useState<any>([]);
+  const deleteHandler = (image: any) => {
+    const currentIndex = photoPreview.indexOf(image);
+    let newImages = [...photoPreview];
+
+    newImages.splice(currentIndex, 1); //currentIndex 부터 한개만 지운다 즉 본인만
+    setPhotoPreview(newImages);
+    // props.refreshFunction(newImages);
   };
   useEffect(() => {
     if (data?.ok) {
@@ -47,20 +58,17 @@ const Upload: NextPage = () => {
     }
   }, [data, router]);
   const photo = watch("photo");
-  const [photoPreview, setPhotoPreview] = useState("");
   useEffect(() => {
     if (photo && photo.length > 0) {
       const file = photo[0];
-      setPhotoPreview(URL.createObjectURL(file));
+      setPhotoPreview([...photoPreview, URL.createObjectURL(file)]);
     }
   }, [photo]);
   return (
-    <Layout canGoBack title="Upload Product">
+    <Layout canGoBack title="중고거래 글쓰기">
       <form className="p-4 space-y-4" onSubmit={handleSubmit(onValid)}>
-        <div>
-          { photoPreview 
-          ? (<img src={photoPreview} className="w-full text-gray-600 h-46 rounded-md"/>)
-          : (<label className="w-full cursor-pointer text-gray-600 hover:border-orange-500 hover:text-orange-500 flex items-center justify-center border-2 border-dashed border-gray-300 h-48 rounded-md">
+        <div className="flex">
+          <label className="mr-3 w-20 h-20 cursor-pointer text-gray-600 hover:border-orange-500 hover:text-orange-500 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md">
             <svg
               className="h-12 w-12"
               stroke="currentColor"
@@ -75,14 +83,34 @@ const Upload: NextPage = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <input 
-              {...register("photo")} 
-              accept="image/*" 
-              className="hidden" 
-              type="file" 
+            <input
+              {...register("photo")}
+              accept="image/*"
+              className="hidden"
+              type="file"
             />
-          </label>)
-          }
+          </label>
+          {photoPreview ? (
+            <div className="flex w-30">
+              {photoPreview.map((src: string, index: string) => (
+                <span className="mr-3 relative">
+                  <span
+                    className="absolute z-10 right-[-5px] top-[-10px] bg-black text-white rounded-full w-5 h-5 flex justify-center items-center text-sm"
+                    onClick={() => deleteHandler(src)}
+                    key={index}
+                  >
+                    X
+                  </span>
+                  <Image
+                    src={src}
+                    className=" text-gray-600 h-46 rounded-md bg-slate-300 object-cover"
+                    width={80}
+                    height={80}
+                  />
+                </span>
+              ))}
+            </div>
+          ) : null}
         </div>
         <Input
           register={register("name", { required: true })}

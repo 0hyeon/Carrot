@@ -10,7 +10,6 @@ import client from "@libs/server/client";
 export interface ProductWithRecords extends Product {
   records: Record;
 }
-
 interface ProductsResponse {
   ok: boolean;
   products: ProductWithRecords[];
@@ -31,7 +30,7 @@ const Home: NextPage = () => {
             title={product.name}
             price={product.price}
             image={product.image}
-            comments={99}
+            comments={0}
             // hearts={product._count.favs}
             hearts={Object.keys(product.records).length}
           />
