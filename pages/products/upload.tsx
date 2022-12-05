@@ -36,7 +36,7 @@ const Upload: NextPage = () => {
       const form = new FormData();
       form.append("file", photo[0], name); //인자1 : from의 name , 인자2 : 보낼사진 , 인자 3 : 사진의 이름
       const {
-        result: { id }, //파일의 id를 백엔드로 보내야함
+        result: { id }, //파일의 id를 백엔드로 보내야함, cloudflare의 저장된 uid
       } = await (await fetch(uploadURL, { method: "POST", body: form })).json();
       uploadProduct({ name, price, description, photoId: id });
     } else {
@@ -62,6 +62,10 @@ const Upload: NextPage = () => {
     if (photo && photo.length > 0) {
       const file = photo[0];
       setPhotoPreview([...photoPreview, URL.createObjectURL(file)]);
+      // URL.revokeObjectURL(URL.createObjectURL(file));
+      console.log("photo : ", photo);
+      console.log("file : ", file);
+      console.log("photoPreview : ", photoPreview);
     }
   }, [photo]);
   return (
@@ -93,9 +97,9 @@ const Upload: NextPage = () => {
           {photoPreview ? (
             <div className="flex w-30">
               {photoPreview.map((src: string, index: string) => (
-                <span className="mr-3 relative">
+                <span className="mr-3 relative" key={index}>
                   <span
-                    className="absolute z-10 right-[-5px] top-[-10px] bg-black text-white rounded-full w-5 h-5 flex justify-center items-center text-sm"
+                    className="cursor-pointer absolute z-10 right-[-5px] top-[-10px] bg-black text-white rounded-full w-5 h-5 flex justify-center items-center text-sm"
                     onClick={() => deleteHandler(src)}
                     key={index}
                   >

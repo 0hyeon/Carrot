@@ -7,7 +7,6 @@ import Link from "next/link";
 import { Product, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
-import useUser from "@libs/client/useUser";
 import { useEffect } from "react";
 import Image from "next/image";
 import { numberWithCommas } from "@libs/client/useComma";
@@ -26,7 +25,6 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
   product,
   relatedProducts,
 }) => {
-  const { user, isLoading } = useUser();
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { data, mutate: boundMutate } = useSWR<ItemDetailResponse>(
