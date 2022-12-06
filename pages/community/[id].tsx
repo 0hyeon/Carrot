@@ -85,6 +85,8 @@ const CommunityPostDetail: NextPage = () => {
       mutate();
     }
   }, [answerData, reset, mutate]);
+  console.log("data?.post?.answers : ", data?.post?.answers);
+
   return (
     <Layout canGoBack seoTitle="Community">
       <div>
@@ -164,7 +166,7 @@ const CommunityPostDetail: NextPage = () => {
             <div key={answer.id} className="flex items-start space-x-3">
               {answer?.user?.avatar ? (
                 <img
-                  src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${data?.post?.user?.avatar}/avatar`}
+                  src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${answer?.user?.avatar}/avatar`}
                   className="w-16 h-16 bg-slate-500 rounded-full"
                 />
               ) : (
