@@ -9,18 +9,18 @@ import { useRouter } from "next/router";
 import useUser, { ProfileResponse } from "@libs/client/useUser";
 import useSWR from "swr";
 // import { PhoneCompnents } from "@components/phoneDynamic";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 
-const PhoneCompnents = dynamic(
-  () =>
-    import("@components/phoneDynamic").then((module) => module.PhoneCompnents),
-  { ssr: false }
-);
-const PhoneCompBtn = dynamic(
-  () =>
-    import("@components/phoneDynamic").then((module) => module.PhoneCompBtn),
-  { ssr: false }
-);
+// const PhoneCompnents = dynamic(
+//   () =>
+//     import("@components/phoneDynamic").then((module) => module.PhoneCompnents),
+//   { ssr: false }
+// );
+// const PhoneCompBtn = dynamic(
+//   () =>
+//     import("@components/phoneDynamic").then((module) => module.PhoneCompBtn),
+//   { ssr: false }
+// );
 
 export interface EnterForm {
   email?: string;
@@ -31,7 +31,7 @@ interface TokenForm {
   token: string;
 }
 
-export interface MutationResult {
+interface MutationResult {
   ok: boolean;
 }
 
@@ -143,11 +143,22 @@ const Enter: NextPage = () => {
                   required
                 />
               ) : null}
-              {method === "phone" ? <PhoneCompnents /> : null}
+              {method === "phone" ? (
+                <Input
+                  register={register("phone")}
+                  name="phone"
+                  label="Phone number"
+                  type="number"
+                  kind="phone"
+                  required
+                />
+              ) : null}
               {method === "email" ? (
                 <Button text={loading ? "Loading" : "Get login link"} />
               ) : null}
-              {method === "phone" ? <PhoneCompBtn /> : null}
+              {method === "phone" ? (
+                <Button text={loading ? "Loading" : "Get one-time password"} />
+              ) : null}
             </form>
           </>
         )}
