@@ -22,4 +22,4 @@ Nextjs 12.2, react 17, TypeScript, prisma, planetscale, Twillo, IronSession , SW
 
 # 주소
 
-carrot-kts4eutk8-0hyeon.vercel.app
+https://carrot-kts4eutk8-0hyeon.vercel.app/
