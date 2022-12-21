@@ -38,22 +38,48 @@ async function handler(
       body: { name, price, description, photoId },
       session: { user },
     } = req;
+    console.log("photoId : ",photoId);
+
+
     const product = await client.product.create({
       data: {
         name,
         price: +price,
         description,
-        image: photoId,
+        image: photoId[0],
         user: {
           connect: {
             id: user?.id,
           },
         },
+        images: {
+          connectOrCreate: photoId.map((src : any) => {
+            return {
+                where: { src:src },
+                create: { src:src },
+            };
+          }),
+        },
       },
     });
+    // let imageDummy = [];
+    // for (let i = 0; i< photoId.length;i++ ){
+    //   imageDummy.push(  
+    //     { src: photoId[i], productId : i },
+    //   )
+    // }
+    // console.log("imageDummy :",imageDummy);
+
+    // const images = await client.image.createMany({
+    //   data :  [
+    //     { src: 'Bob', productId: 2 },
+    //     { src: 'Bobby', productId: 2 },
+    //   ]
+    // })
     res.json({
       ok: true,
       product,
+      // images
     });
   }
 }

@@ -12,7 +12,8 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   const { phone, email } = req.body;
-  const user = phone ? { phone } : email ? { email } : null;
+  const user = phone ? { phone } : email ? { email } : null;// { email: 'djdjdjk2006@naver.com'}
+
   if (!user) return res.status(400).json({ ok: false });
   const payload = Math.floor(100000 + Math.random() * 900000) + "";
   const token = await client.token.create({
@@ -20,10 +21,10 @@ async function handler(
       payload,
       user: {
         connectOrCreate: {
-          where: {
+          where: {//where 속성에서는 해당 조건을 만족하는 지 검색 후, 
             ...user,
           },
-          create: {
+          create: {//있다면 연결하고, 없다면 create 속성 내부의 name,user를 만들어 준다.
             name: "Anonymous",
             ...user,
           },
@@ -42,12 +43,12 @@ async function handler(
   } else if (email) {
     const email = await mail.send({
       from: "djdjdjk2006@naver.com",
-      to: "djdjdjk2006@naver.com",
+      to: "djdjdjk2002@gmail.com",
       subject: "Your Carrot Market Verification Email",
       text: `Your token is ${payload}`,
       html: `<strong>Your token is ${payload}</strong>`,
     });
-    console.log(email);
+    console.log("email : ",email);
   }
   return res.json({
     ok: true,
