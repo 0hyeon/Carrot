@@ -52,7 +52,7 @@ async function handler(
             id: user?.id,
           },
         },
-        images: {
+        slideimages: {
           connectOrCreate: photoId.map((src : any) => {
             return {
                 where: { src:src },

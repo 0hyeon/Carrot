@@ -4,15 +4,17 @@ import Layout from "@components/layout";
 import { useRouter } from "next/router";
 import useSWR, { SWRConfig, useSWRConfig } from "swr";
 import Link from "next/link";
-import { Product, User } from "@prisma/client";
+import { Product, slideImage, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import { useEffect } from "react";
 import Image from "next/image";
 import { numberWithCommas } from "@libs/client/useComma";
 import client from "@libs/server/client";
+import Carousel from "nuka-carousel"
 interface ProductWithUser extends Product {
   user: User;
+  slideimages:slideImage[];
 }
 interface ItemDetailResponse {
   ok: boolean;
@@ -57,16 +59,30 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
       </Layout>
     );
   }
+  console.log("product : ",product);
   return (
     <Layout canGoBack seoTitle="Product">
       <div className="px-4  py-4">
         <div className="mb-8">
           <div className="relative pb-80">
-            <Image
+            <Carousel>
+              {product?.slideimages?.map((pd : any) => (
+                <>
+                  <Image
+                    src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${pd?.src}/public`}
+                    className="h-96 bg-slate-300 object-cover rounded-md"
+                    // layout="fill"
+                    width={48}
+                    height={48}
+                  />
+                </>
+              ))}
+            </Carousel>
+            {/* <Image
               src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${product?.image}/public`}
               className="h-96 bg-slate-300 object-cover rounded-md"
               layout="fill"
-            />
+            /> */}
           </div>
           <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
             <Image
@@ -216,6 +232,12 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
           avatar: true,
         },
       },
+      slideimages:{
+        select:{
+          id: true,
+          src:true,
+        }
+      }
     },
   });
   const terms = product?.name.split(" ").map((word) => ({

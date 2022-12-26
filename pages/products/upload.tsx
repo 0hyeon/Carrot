@@ -34,25 +34,17 @@ const Upload: NextPage = () => {
     if (loading) return;
 
     if (photo && photo.length > 0) {
-
       const form = new FormData();
-      const config = {
-        header: { 'content-type' : 'multipart/form-data' }
-    }
       // setPhotoPreview
-      form.append("file", photo[0], name); //인자1 : from의 name , 인자2 : 보낼사진 , 인자 3 : 사진의 이름
       let dummyId : string[] = [];
-      for (let i = 0; i< photoPreview.length;i++){
-
+      form.append("file", photo[0]); //인자1 : from의 name , 인자2 : 보낼사진 , 인자 3 : 사진의 이름
+      for (let i = 0; i< photoPreview.length;i++){//업로드 갯수만큼 
         const { uploadURL } = await (await fetch("/api/files")).json(); // 백엔드api에서 CF에서 빈파일 url전해받음
-
         const {
           result: { id }, // db에 저장해아할 사진 id 
         } = await (await fetch(uploadURL, { method: "POST", body: form })).json();
-
         dummyId.push(id)
       }
-      console.log("dummyId : ",dummyId)
       uploadProduct({ name, price, description, photoId: dummyId,productId:9999 });
 
     } else {
@@ -82,9 +74,9 @@ const Upload: NextPage = () => {
       const file = photo[0];
       setPhotoPreview([...photoPreview, URL.createObjectURL(file)]);
       // URL.revokeObjectURL(URL.createObjectURL(file));
-      console.log("photo : ", photo);
-      console.log("file : ", file);
-      console.log("photoPreview : ", photoPreview);
+      console.log("photo2 : ", photo);
+      console.log("file2 : ", file);
+      console.log("photoPreview2 : ", photoPreview);
     }
   }, [photo]);
   return (
