@@ -30,19 +30,37 @@ const Upload: NextPage = () => {
   const [uploadProduct, { loading, data }] =
     useMutation<UploadProductMutation>("/api/products");
 
-  const onValid = async ({ name, price, description }: UploadProductForm) => {
+  const [photoPreview, setPhotoPreview] = useState<any>([]);
+  const [fileView, setfileView] = useState<any>([]);
+  const onValid = async ({ name, price, description }: UploadProductForm) => {//submit
+    
     if (loading) return;
 
     if (photo && photo.length > 0) {
       const form = new FormData();
       // setPhotoPreview
+      
+      
+      for (let key of form.keys()) {//form 들어있는 값 확인
+        console.log(key, ":", form.get(key));
+      }
+      
       let dummyId : string[] = [];
-      form.append("file", photo[0]); //인자1 : from의 name , 인자2 : 보낼사진 , 인자 3 : 사진의 이름
       for (let i = 0; i< photoPreview.length;i++){//업로드 갯수만큼 
+        form.append("file", fileView[i]); //인자1 : from의 name , 인자2 : 보낼사진 , 인자 3 : 사진의 이름
+        console.log("fileView[i] : ",fileView[i]);
+        console.log("photo[0] : ",photo[0]);
+
         const { uploadURL } = await (await fetch("/api/files")).json(); // 백엔드api에서 CF에서 빈파일 url전해받음
         const {
           result: { id }, // db에 저장해아할 사진 id 
         } = await (await fetch(uploadURL, { method: "POST", body: form })).json();
+
+        form.forEach(function(val, key, fD){
+          // here you can add filtering conditions
+          form.delete(key)
+        });
+        console.log("id : ",id);
         dummyId.push(id)
       }
       uploadProduct({ name, price, description, photoId: dummyId,productId:9999 });
@@ -53,7 +71,7 @@ const Upload: NextPage = () => {
 
     }
   };
-  const [photoPreview, setPhotoPreview] = useState<any>([]);
+  
 
   const deleteHandler = (image: any) => {
     const currentIndex = photoPreview.indexOf(image);
@@ -73,15 +91,18 @@ const Upload: NextPage = () => {
     if (photo && photo.length > 0) {
       const file = photo[0];
       setPhotoPreview([...photoPreview, URL.createObjectURL(file)]);
+      setfileView([...fileView, photo[0] ]);
+
       // URL.revokeObjectURL(URL.createObjectURL(file));
       console.log("photo2 : ", photo);
       console.log("file2 : ", file);
       console.log("photoPreview2 : ", photoPreview);
+      console.log("fileView2 : ", fileView);
     }
   }, [photo]);
   return (
     <Layout canGoBack title="중고거래 글쓰기">
-      <form className="p-4 space-y-4" onSubmit={handleSubmit(onValid)}>
+      <form className="p-4 space-y-4" onSubmit={handleSubmit(onValid)} encType="multipart/form-data">
         <div className="flex">
           <label className="mr-3 w-20 h-20 cursor-pointer text-gray-600 hover:border-orange-500 hover:text-orange-500 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md">
             <svg
@@ -148,7 +169,7 @@ const Upload: NextPage = () => {
           label="Description"
           required
         />
-        <Button text={loading ? "Loading..." : "Upload item"} />
+        <Button text={loading ? "Loading..." : "상품 업로드"} />
       </form>
     </Layout>
   );

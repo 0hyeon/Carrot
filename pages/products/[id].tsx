@@ -64,18 +64,39 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
     <Layout canGoBack seoTitle="Product">
       <div className="px-4  py-4">
         <div className="mb-8">
-          <div className="relative pb-80">
-            <Carousel>
+          <div className="relative">
+            <Carousel
+            renderCenterLeftControls={({ previousSlide }) => (
+              <button onClick={previousSlide}>
+                {/* <i className="fa fa-arrow-left" /> */}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+              </button>
+            )}
+            renderCenterRightControls={({ nextSlide }) => (
+              <button onClick={nextSlide}>
+                {/* <i className="fa fa-arrow-right"/> */}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+            )}
+            autoplay={true}
+            autoplayInterval={2000}
+            wrapAround = {true}
+          >
+              
               {product?.slideimages?.map((pd : any) => (
-                <>
+                <div className="relative pb-96">
                   <Image
                     src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${pd?.src}/public`}
-                    className="h-96 bg-slate-300 object-cover rounded-md"
-                    // layout="fill"
-                    width={48}
-                    height={48}
+                    className="h-96 object-cover rounded-md"
+                    layout="fill"
+                    // width={350}
+                    // height={350}
                   />
-                </>
+                </div>
               ))}
             </Carousel>
             {/* <Image
