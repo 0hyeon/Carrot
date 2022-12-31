@@ -22,7 +22,7 @@ const Home: NextPage = () => {
   //   useSWR<ProfileResponse>("/api/users/me");
   return (
     <Layout title="홈" hasTabBar seoTitle="Home">
-      <div className="flex flex-col space-y-5 divide-y">
+      <div className="flex flex-col md:inline-block md: space-y-5 divide-y">
         {data?.products?.map((product) => (
           <Item
             id={product.id}
