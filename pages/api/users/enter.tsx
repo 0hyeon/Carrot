@@ -33,10 +33,14 @@ async function handler(
     },
   });
   if (phone) {
+    phone.split("010")[1];
+    const settingPhone = "+8210"+phone.split("010")[1];
+    // console.log("settingPhone : ",settingPhone);
+    //821041096590
     const message = await twilioClient.messages.create({
-      messagingServiceSid: process.env.TWILIO_MSID,
-      // to: process.env.MY_PHONE as string,
-      to: phone,
+      // messagingServiceSid: process.env.TWILIO_MSID,
+      from: process.env.MY_PHONE,
+      to: settingPhone,
       body: `Your login token is ${payload}.`,
     });
     console.log(message);
