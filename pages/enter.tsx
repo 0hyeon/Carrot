@@ -8,19 +8,6 @@ import { cls } from "@libs/client/utils";
 import { useRouter } from "next/router";
 import useUser, { ProfileResponse } from "@libs/client/useUser";
 import useSWR from "swr";
-// import { PhoneCompnents } from "@components/phoneDynamic";
-// import dynamic from "next/dynamic";
-
-// const PhoneCompnents = dynamic(
-//   () =>
-//     import("@components/phoneDynamic").then((module) => module.PhoneCompnents),
-//   { ssr: false }
-// );
-// const PhoneCompBtn = dynamic(
-//   () =>
-//     import("@components/phoneDynamic").then((module) => module.PhoneCompBtn),
-//   { ssr: false }
-// );
 
 export interface EnterForm {
   email?: string;

@@ -61,7 +61,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
   }
   return (
     <Layout canGoBack seoTitle="Product">
-      <div className="px-4  py-4">
+      <div className="px-4 py-4 md:max-w-2xl md:mx-auto md:my-0">
         <div className="mb-8">
           <div className="relative">
             <Carousel
@@ -85,7 +85,6 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
             autoplayInterval={2000}
             wrapAround = {true}
           >
-              
               {product?.slideimages?.map((pd : any,idx) => (
                 <div className="relative pb-96" key={idx}>
                   <Image

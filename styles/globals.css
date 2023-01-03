@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* nukaslide-dot-css */
+/* .paging-dot {width: 20px;height: 20px;z-index: 1;} */
+/* .paging-dot > circle {r: 6px;cx: 10px;cy: 10px;} */
+.slider-control-bottomcenter button{
+  background: black !important;
+  border-radius: 50%; 
+  width: 13px !important; 
+  height: 13px !important;
+}
+
+.slider-control-bottomcenter svg{
+  display: none !important;
+ }
+.slider-control-bottomcenter li{
+  margin-right: 5px;
+ }
