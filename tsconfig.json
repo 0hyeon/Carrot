@@ -23,6 +23,6 @@
 
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/search/[id]"],
   "exclude": ["node_modules"]
 }

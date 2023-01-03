@@ -59,7 +59,6 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
       </Layout>
     );
   }
-  console.log("product : ",product);
   return (
     <Layout canGoBack seoTitle="Product">
       <div className="px-4  py-4">
@@ -69,16 +68,16 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
             renderCenterLeftControls={({ previousSlide }) => (
               <button onClick={previousSlide}>
                 {/* <i className="fa fa-arrow-left" /> */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>
               </button>
             )}
             renderCenterRightControls={({ nextSlide }) => (
               <button onClick={nextSlide}>
                 {/* <i className="fa fa-arrow-right"/> */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
               </button>
             )}
@@ -87,8 +86,8 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
             wrapAround = {true}
           >
               
-              {product?.slideimages?.map((pd : any) => (
-                <div className="relative pb-96">
+              {product?.slideimages?.map((pd : any,idx) => (
+                <div className="relative pb-96" key={idx}>
                   <Image
                     src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${pd?.src}/public`}
                     className="h-96 object-cover rounded-md"
@@ -261,12 +260,12 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       }
     },
   });
-  const terms = product?.name.split(" ").map((word) => ({
+  const terms = product?.name.split(" ").map((word) => ({//product의 단어를 [galaxy,s40]으로 만들어준뒤 
     name: {
       contains: word,
     },
   }));
-  const relatedProducts = await client.product.findMany({
+  const relatedProducts = await client.product.findMany({//terms 배열의 product를 여러개 찾음
     where: {
       OR: terms,
       AND: {

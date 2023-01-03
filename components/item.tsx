@@ -20,16 +20,15 @@ export default function Item({
 }: ItemProps) {
   return (
     <Link href={`/products/${id}`}>
-      <a className="flex px-4 pt-5 cursor-pointer justify-between">
-        <div className="flex space-x-4">
-          <div className="w-20 h-20 bg-gray-400 rounded-md relative">
+      <a className="w-full md:w-1/4 md:flex-col flex px-4 pt-5 cursor-pointer justify-between">
+        <div className="md:block flex space-x-4 md:space-x-0">
+          <div className="md:w-[14rem] md:h-[14rem] w-20 h-20 bg-gray-400 rounded-md relative">
             <Image
               src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${image}/public`}
-              className="h-96 bg-slate-300 object-cover rounded-md"
+              className=" h-96 bg-slate-300 object-cover rounded-md"
               layout="fill"
             />
           </div>
-
           <div className="pt-2 flex flex-col">
             <h3 className="text-sm font-medium text-gray-900">{title}</h3>
             <span className="font-medium mt-1 text-gray-900">
