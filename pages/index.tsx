@@ -23,7 +23,9 @@ const Home: NextPage = () => {
   return (
     <Layout title="홈" hasTabBar seoTitle="Home">
       <div className="text-center">
-        <div className="hidden md:block mb-20 text-3xl font-normal">중고거래 인기매물</div>
+        <div className="hidden md:block mb-20 text-3xl font-normal">
+          중고거래 인기매물
+        </div>
       </div>
       <div className="md:w-full flex flex-row md:space-y-0 space-y-5 divide-y md:divide-y-0 flex-wrap">
         {data?.products?.map((product) => (
