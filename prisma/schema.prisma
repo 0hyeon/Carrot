@@ -44,8 +44,10 @@
 //12.libs파일생성 client.ts 생성
 //13.npm install @prisma/client
 
+
 // 모델 Token의 user가 자동완성 되지 않고 referentialIntegrity를 주석처리해도 자동 완성이 되지 않을 때에는 우선 저장을 해둔 뒤에 콘솔창에 npx prisma format을 입력하시면 됩니다.
 
+//npx prisma generate 필요 
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
@@ -55,6 +57,7 @@ datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
+  // relationMode = "prisma" 
 }
 
 model User {
