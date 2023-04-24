@@ -121,9 +121,9 @@ export default function Layout({
             <Link href="/community">
               <li className="cursor-pointer">동네생활</li>
             </Link>
-            <Link href="/chats">
+            {/* <Link href="/chats">
               <li className="cursor-pointer">채팅</li>
-            </Link>
+            </Link> */}
             {/* <Link href="/streams">
               <li className="cursor-pointer">라이브</li>
             </Link> */}
@@ -243,7 +243,7 @@ export default function Layout({
               <span>동네생활</span>
             </a>
           </Link>
-          <Link href="/chats">
+          {/* <Link href="/chats">
             <a
               className={cls(
                 "flex flex-col items-center space-y-2 ",
@@ -268,7 +268,7 @@ export default function Layout({
               </svg>
               <span>채팅</span>
             </a>
-          </Link>
+          </Link> */}
           {/* <Link href="/streams">
             <a
               className={cls(
