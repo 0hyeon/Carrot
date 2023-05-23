@@ -152,7 +152,11 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
             </span>
             <p className=" my-6 text-gray-700">{product?.description}</p>
             <div className="flex items-center justify-between space-x-2">
-              <Button large text="1:1 채팅하기" />
+              <Button
+                large
+                text="1:1 채팅하기"
+                onClick={() => alert("준비중입니다.")}
+              />
               <button
                 onClick={onFavClick}
                 className={cls(
