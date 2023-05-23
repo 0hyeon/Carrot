@@ -14,9 +14,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       value={{
         fetcher: (url: string) =>
           fetch(url).then((response) => response.json()),
-        }}
+      }}
     >
-        <div className="mx-auto max-w-xl w-full md:max-w-full">{/*  768이상은 100%  그외(밑)은 512px*  /}
+      <div className="mx-auto max-w-xl w-full md:max-w-full">
+        {/*  768이상은 100%  그외(밑)은 512px*  /}
         {/* <LoginCheck /> */}
         <Component {...pageProps} />
         {/* <Script

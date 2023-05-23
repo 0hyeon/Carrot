@@ -35,10 +35,6 @@ const Enter: NextPage = () => {
     useForm<TokenForm>();
 
   const [method, setMethod] = useState<"email" | "phone">("phone");
-  // const onEmailClick = () => {
-  //   reset();
-  //   setMethod("email");
-  // };
   const onPhoneClick = () => {
     reset();
     setMethod("phone");
@@ -56,7 +52,8 @@ const Enter: NextPage = () => {
   //   useSWR<ProfileResponse>("/api/users/me");
   useEffect(() => {
     if (tokenData?.ok === true) {
-      router.push("/");
+      //router.push("/");
+      window.location.href = "/";
     }
   }, [tokenData]);
   // useEffect(() => {
@@ -66,7 +63,7 @@ const Enter: NextPage = () => {
   // }, [data3]);
 
   return (
-    <Layout>
+    <Layout seoTitle="Enter">
       <div className="mt-16 px-4 md:max-w-xl w-full md:mx-auto">
         <h3 className="text-3xl font-bold text-center">Enter to Carrot</h3>
         <div className="mt-12">
@@ -146,7 +143,9 @@ const Enter: NextPage = () => {
                   <Button text={loading ? "Loading" : "Get login link"} />
                 ) : null} */}
                 {method === "phone" ? (
-                  <Button text={loading ? "Loading" : "Get one-time password"} />
+                  <Button
+                    text={loading ? "Loading" : "Get one-time password"}
+                  />
                 ) : null}
               </form>
             </>

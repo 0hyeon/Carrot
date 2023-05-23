@@ -3,7 +3,6 @@ import FloatingButton from "@components/floating-button";
 import Item from "@components/item";
 import Layout from "@components/layout";
 // import useUser, { ProfileResponse } from "@libs/client/useUser";
-import Head from "next/head";
 import useSWR, { SWRConfig } from "swr";
 import { Product, Record } from "@prisma/client";
 import client from "@libs/server/client";

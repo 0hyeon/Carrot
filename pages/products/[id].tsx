@@ -11,10 +11,10 @@ import { useEffect } from "react";
 import Image from "next/image";
 import { numberWithCommas } from "@libs/client/useComma";
 import client from "@libs/server/client";
-import Carousel from "nuka-carousel"
+import Carousel from "nuka-carousel";
 interface ProductWithUser extends Product {
   user: User;
-  slideimages:slideImage[];
+  slideimages: slideImage[];
 }
 interface ItemDetailResponse {
   ok: boolean;
@@ -65,27 +65,49 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
         <div className="mb-8">
           <div className="relative">
             <Carousel
-            renderCenterLeftControls={({ previousSlide }) => (
-              <button onClick={previousSlide}>
-                {/* <i className="fa fa-arrow-left" /> */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-              </button>
-            )}
-            renderCenterRightControls={({ nextSlide }) => (
-              <button onClick={nextSlide}>
-                {/* <i className="fa fa-arrow-right"/> */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
-              </button>
-            )}
-            autoplay={true}
-            autoplayInterval={2000}
-            wrapAround = {true}
-          >
-              {product?.slideimages?.map((pd : any,idx) => (
+              renderCenterLeftControls={({ previousSlide }) => (
+                <button onClick={previousSlide}>
+                  {/* <i className="fa fa-arrow-left" /> */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-10 h-10"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 19.5L8.25 12l7.5-7.5"
+                    />
+                  </svg>
+                </button>
+              )}
+              renderCenterRightControls={({ nextSlide }) => (
+                <button onClick={nextSlide}>
+                  {/* <i className="fa fa-arrow-right"/> */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-10 h-10"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                    />
+                  </svg>
+                </button>
+              )}
+              autoplay={true}
+              autoplayInterval={2000}
+              wrapAround={true}
+            >
+              {product?.slideimages?.map((pd: any, idx) => (
                 <div className="relative pb-96" key={idx}>
                   <Image
                     src={`https://imagedelivery.net/tUnns8TnvEqxOzjreCbU6w/${pd?.src}/public`}
@@ -251,20 +273,22 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
           avatar: true,
         },
       },
-      slideimages:{
-        select:{
+      slideimages: {
+        select: {
           id: true,
-          src:true,
-        }
-      }
+          src: true,
+        },
+      },
     },
   });
-  const terms = product?.name.split(" ").map((word) => ({//product의 단어를 [galaxy,s40]으로 만들어준뒤 
+  const terms = product?.name.split(" ").map((word) => ({
+    //product의 단어를 [galaxy,s40]으로 만들어준뒤
     name: {
       contains: word,
     },
   }));
-  const relatedProducts = await client.product.findMany({//terms 배열의 product를 여러개 찾음
+  const relatedProducts = await client.product.findMany({
+    //terms 배열의 product를 여러개 찾음
     where: {
       OR: terms,
       AND: {

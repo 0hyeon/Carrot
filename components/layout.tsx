@@ -66,10 +66,13 @@ export default function Layout({
       }
     }
   }, [data]);
+
+  const titleMsg = `${seoTitle} | Carrot Market`;
+
   return (
     <div>
       <Head>
-        <title>{seoTitle} | Carrot Market</title>
+        <title>{titleMsg}</title>
       </Head>
       <div className="hidden md:flex h-[4rem] max-w-[75rem] mx-auto my-0 justify-between items-center py-3 px-4">
         <div className="flex">

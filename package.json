@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "4.4.0",
+    "@prisma/client": "^4.14.0",
     "@sendgrid/mail": "^7.7.0",
     "axios": "^1.2.1",
     "iron-session": "^6.2.1",

@@ -309,17 +309,17 @@
     tslib "^2.4.0"
     webcrypto-core "^1.7.4"
 
-"@prisma/client@4.4.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.4.0.tgz#45f59c172dd3621ecc92d7cf9bc765d85e6c7d56"
-  integrity sha512-ciKOP246x1xwr04G9ajHlJ4pkmtu9Q6esVyqVBO0QJihaKQIUvbPjClp17IsRJyxqNpFm4ScbOc/s9DUzKHINQ==
+"@prisma/client@^4.14.0":
+  version "4.14.0"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.14.0.tgz#715b3dd045d094b03cb0a7f2991f088d15ae553e"
+  integrity sha512-MK/XaA2sFdfaOa7I9MjNKz6dxeIEdeZlnpNRoF2w3JuRLlFJLkpp6cD3yaqw2nUUhbrn3Iqe3ZpVV+VuGGil7Q==
   dependencies:
-    "@prisma/engines-version" "4.4.0-66.f352a33b70356f46311da8b00d83386dd9f145d6"
+    "@prisma/engines-version" "4.14.0-67.d9a4c5988f480fa576d43970d5a23641aa77bc9c"
 
-"@prisma/engines-version@4.4.0-66.f352a33b70356f46311da8b00d83386dd9f145d6":
-  version "4.4.0-66.f352a33b70356f46311da8b00d83386dd9f145d6"
-  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-4.4.0-66.f352a33b70356f46311da8b00d83386dd9f145d6.tgz#00875863bb30b670a586a5b5794a000f7f3ad976"
-  integrity sha512-P5v/PuEIJLYXZUZBvOLPqoyCW+m6StNqHdiR6te++gYVODpPdLakks5HVx3JaZIY+LwR02juJWFlwpc9Eog/ug==
+"@prisma/engines-version@4.14.0-67.d9a4c5988f480fa576d43970d5a23641aa77bc9c":
+  version "4.14.0-67.d9a4c5988f480fa576d43970d5a23641aa77bc9c"
+  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-4.14.0-67.d9a4c5988f480fa576d43970d5a23641aa77bc9c.tgz#0aeca447c4a5f23c83f68b8033e627b60bc01850"
+  integrity sha512-3jum8/YSudeSN0zGW5qkpz+wAN2V/NYCQ+BPjvHYDfWatLWlQkqy99toX0GysDeaUoBIJg1vaz2yKqiA3CFcQw==
 
 "@prisma/engines@4.4.0":
   version "4.4.0"
